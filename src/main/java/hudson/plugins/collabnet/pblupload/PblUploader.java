@@ -16,9 +16,6 @@ import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Notifier;
 import hudson.tasks.Publisher;
 import hudson.util.FormValidation;
-import hudson.util.Secret;
-
-import org.jenkinsci.remoting.RoleChecker;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
@@ -42,7 +39,7 @@ public class PblUploader extends Notifier implements java.io.Serializable {
     private static String PBL_UPLOAD_URL = "pbl_upload";
     private String hostUrl;
     private String user;
-    private Secret key;
+    private String key;
     private String project;
     private String pubOrPriv = "priv"; // "pub" or "priv" for compatibility reasons
     private FilePattern[] file_patterns;
@@ -76,7 +73,7 @@ public class PblUploader extends Notifier implements java.io.Serializable {
      * @param description of the files.
      */
     @DataBoundConstructor
-    public PblUploader(String hostUrl, String user, Secret key, String project,
+    public PblUploader(String hostUrl, String user, String key, String project,
                        boolean pubOrPriv, FilePattern[] filePatterns, String path,
                        boolean preserveLocal, boolean force, String comment, 
                        String description, String removePrefixRegex) {
@@ -84,7 +81,7 @@ public class PblUploader extends Notifier implements java.io.Serializable {
         this.user = user;
         // our sig generator depends on the letters in our hex
         // being lower case
-        this.key = key;
+        this.key = key.trim().toLowerCase();
         this.project = project;
         this.pubOrPriv = pubOrPriv?"pub":"priv";
         this.file_patterns = filePatterns;
@@ -118,11 +115,11 @@ public class PblUploader extends Notifier implements java.io.Serializable {
         }
     }
 
-    private Secret returnValueOrEmptyString(Secret key){
-    	if (key != null) {
-            return key;
+    private String returnValueOrEmptyString(String input){
+    	if (input != null) {
+            return input;
         } else {
-            return Secret.fromString("");
+            return "";
         }	
     }
     
@@ -130,7 +127,7 @@ public class PblUploader extends Notifier implements java.io.Serializable {
     /**
      * @return the key to login with.
      */
-    public Secret getKey() {
+    public String getKey() {
       return returnValueOrEmptyString(this.key);
     }
 
@@ -620,18 +617,12 @@ public class PblUploader extends Notifier implements java.io.Serializable {
             {
 		        final CubitConnector cubitConnector = new CubitConnector(getHostUrl(),
 		                                                                 getUser(),
-		                                                                 Secret.toString(getKey()));
+		                                                                 getKey());
  			    return cubitConnector.callCubit(PBL_UPLOAD_URL, 
                                                 args, 
                                                 file,
                                                 true);
             }
-						@Override
-						public void checkRoles(RoleChecker arg0)
-								throws SecurityException {
-							// TODO Auto-generated method stub
-							
-						}
         });
         logPblCallResults(result, args, uploadFilePath, workspace);
         return(result.getStatus() == 200);

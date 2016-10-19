@@ -19,8 +19,6 @@ import hudson.plugins.collabnet.util.CommonUtil;
 import hudson.remoting.VirtualChannel;
 import hudson.tasks.BuildStepMonitor;
 import hudson.util.FormValidation;
-
-import org.jenkinsci.remoting.RoleChecker;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
@@ -382,14 +380,7 @@ public class CNDocumentUploader extends AbstractTeamForgeNotifier {
                         return "text/plain";
                     }
                     return new MimetypesFileTypeMap().getContentType(f);
-                }
-
-				@Override
-				public void checkRoles(RoleChecker arg0)
-						throws SecurityException {
-					// TODO Auto-generated method stub
-					
-				}});
+                }});
         } catch (IOException ioe) { // ignore exceptions
         } catch (InterruptedException ie) {}
         return mimeType;
@@ -481,12 +472,6 @@ public class CNDocumentUploader extends AbstractTeamForgeNotifier {
             CollabNetApp cnApp = CNHudsonUtil.recreateCollabNetApp(mUrl, mUsername, mSessionId);
             return cnApp.upload(f).getId();
         }
-
-		@Override
-		public void checkRoles(RoleChecker arg0) throws SecurityException {
-			// TODO Auto-generated method stub
-			
-		}
     }
 
     /**

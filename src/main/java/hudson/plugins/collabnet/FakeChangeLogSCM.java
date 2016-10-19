@@ -4,7 +4,6 @@ import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
-import hudson.model.Run;
 import hudson.model.User;
 import hudson.scm.ChangeLogParser;
 import hudson.scm.ChangeLogSet;
@@ -91,7 +90,7 @@ public class FakeChangeLogSCM extends NullSCM {
                     final List<Commit> commits = (List<Commit>)ois.readObject();
                     ois.close();
 
-                    return new ChangeLogSet<Entry>((Run<?,?>)build,null) {
+                    return new ChangeLogSet<Entry>(build) {
                         private final ChangeLogSet THIS = this;
                         public boolean isEmptySet() {
                             return commits.isEmpty();

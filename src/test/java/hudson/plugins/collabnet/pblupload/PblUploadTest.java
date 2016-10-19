@@ -1,15 +1,17 @@
 package hudson.plugins.collabnet.pblupload;
 
 import com.collabnet.cubit.api.CubitConnector;
+
 import com.gargoylesoftware.htmlunit.Page;
-import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.TaskListener;
+
 import hudson.plugins.collabnet.util.CommonUtil;
 import hudson.plugins.collabnet.util.HudsonConstants;
 import hudson.plugins.collabnet.util.Util;
@@ -189,11 +191,11 @@ public class PblUploadTest extends HudsonTestCase {
 
     public int getUniqueId(HtmlPage configurePage) {
         // the unique id we want is the last that's present on the page
-        List<DomElement> elems = configurePage.
+        List<HtmlElement> elems = configurePage.
             getElementsByName(URL_NAME);
         int id = -1;
         int unique_id = -1;
-        for (DomElement elem: elems) {
+        for (HtmlElement elem: elems) {
             System.out.println("id = " + elem.getId());
             String[] parts = elem.getId().split("\\.");
             if (parts.length > 0 && !parts[0].equals("")) {

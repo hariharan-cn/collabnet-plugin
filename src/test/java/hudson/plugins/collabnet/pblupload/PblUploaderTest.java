@@ -2,7 +2,6 @@ package hudson.plugins.collabnet.pblupload;
 
 import hudson.plugins.collabnet.CNHudsonTestCase;
 import hudson.plugins.collabnet.documentuploader.FilePattern;
-import hudson.util.Secret;
 
 public class PblUploaderTest extends CNHudsonTestCase {
     public void testConfigRoundtrip() throws Exception {
@@ -11,11 +10,11 @@ public class PblUploaderTest extends CNHudsonTestCase {
         setGlobalConnectionFactory();
 
         roundtripAndAssertIntegrity(new PblUploader(
-                "aaa","bbb",Secret.fromString("ccc"),"ddd",true,new FilePattern[]{new FilePattern("eee")},"fff",true,true,"ggg","hhh","iii"),FIELDS);
+                "aaa","bbb","ccc","ddd",true,new FilePattern[]{new FilePattern("eee")},"fff",true,true,"ggg","hhh","iii"),FIELDS);
         // note that because filePatterns is minimum 1, new FilePattern[0] test would fail
 
         roundtripAndAssertIntegrity(new PblUploader(
-                "aaa","bbb",Secret.fromString("ccc"),"ddd",false,new FilePattern[]{new FilePattern("eee"),new FilePattern("eee2")},
+                "aaa","bbb","ccc","ddd",false,new FilePattern[]{new FilePattern("eee"),new FilePattern("eee2")},
                 "fff",false,false,"ggg","hhh","iii"),FIELDS);
     }
 

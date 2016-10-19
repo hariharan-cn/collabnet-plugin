@@ -101,7 +101,7 @@ public class CNTrackerTest extends CNHudsonTestCase {
         this.verifyArtifactValues(artifact);
     }
 
-    public void ignoreTestSuccessfulBuildWithTracker() throws Exception {
+    public void testSuccessfulBuildWithTracker() throws Exception {
         if (!verifyOnline())    return;
 
         FreeStyleProject p = createProject(false);
